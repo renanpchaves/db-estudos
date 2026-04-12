@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from database import SessionLocal
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 from typing import List
 import schemas
 import models
@@ -24,18 +24,29 @@ def read_root():
 # ====================================================================
 # Estudantes
 # ====================================================================
-@router.post("/estudantes/", response_model=schemas.EstudanteResponse)
+@router.post("/estudantes/", response_model=schemas.Estudante)
 def criar_estudante(estudante: schemas.EstudanteCreate, db: Session = Depends(get_db)):
-    db_estudante = models.Estudante(**estudante.model_dump())
+    db_estudante = (
+        models.Estudante(
+            nome=estudante.nome,
+            perfil=(
+                models.Perfil(**estudante.perfil.model_dump())
+                if estudante.perfil
+                else None
+            ),
+        ),
+    )
     db.add(db_estudante)
     db.commit()
     db.refresh(db_estudante)
     return db_estudante
 
 
-@router.get("/estudantes/", response_model=List[schemas.EstudanteResponse])
+@router.get("/estudantes/", response_model=List[schemas.Estudante])
 def listar_estudantes(db: Session = Depends(get_db)):
-    estudantes = db.query(models.Estudante).all()
+    estudantes = (
+        db.query(models.Estudante).options(joinedload(models.Estudante.perfil)).all()
+    )
     return estudantes
 
 
@@ -44,6 +55,13 @@ def listar_estudantes(db: Session = Depends(get_db)):
 # ====================================================================
 @router.post("/matriculas/", response_model=schemas.MatriculaResponse)
 def criar_matricula(matricula: schemas.MatriculaCreate, db: Session = Depends(get_db)):
+    estudante = (
+        db.query(models.Estudante)
+        .filter(models.Estudante.id == matricula.estudante_id)
+        .first()
+    )
+    if not estudante:
+        raise HTTPException(status_code=404, detail="Estudante não encontrado")
     db_matricula = models.Matricula(**matricula.model_dump())
     db.add(db_matricula)
     db.commit()
