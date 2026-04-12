@@ -4,8 +4,8 @@ Estudo de banco de dados com Python, FastAPI e PostgreSQL.
 
 ## Funcionalidades
 
-- Cadastrar e listar estudantes
-- Cadastrar e listar matrículas
+- Cadastrar e listar estudantes (com perfil opcional)
+- Cadastrar e listar matrículas (com validação de estudante existente)
 
 ## Tecnologias
 
@@ -13,13 +13,29 @@ Estudo de banco de dados com Python, FastAPI e PostgreSQL.
 - FastAPI
 - SQLAlchemy
 - PostgreSQL
+- Pydantic
 - psycopg2
+
+## Estrutura do projeto
+
+```
+postgres-studies/
+├── database/
+│   └── database.py       # Conexão e sessão com o banco
+├── models/
+│   └── models.py         # Modelos SQLAlchemy
+├── schemas/
+│   └── schemas.py        # Schemas Pydantic
+├── routes/
+│   └── routes.py         # Endpoints da API
+└── main.py               # Entrypoint da aplicação
+```
 
 ## Configuração
 
 ### 1. PostgreSQL
 
-Certifique que o PostgreSQL está rodando e configure user(caso não esteja), e a database:
+Certifique que o PostgreSQL está rodando, configure user (caso não esteja configurado) e a database:
 
 ```sql
 CREATE USER admin WITH PASSWORD 'sua_senha';
@@ -32,18 +48,18 @@ GRANT ALL PRIVILEGES ON DATABASE escola TO admin;
 Crie um arquivo `.env` na raiz do projeto baseado no `.env.example`:
 
 ```
-DATABASE_URL=postgresql+psycopg2://admin:sua_senha@localhost/escola
+DATABASE_URL=postgresql+psycopg2://postgres:postgres@localhost/escola
 ```
 
 ### 3. Instalar dependências
 
-```powershell
+```bash
 pip install -r requirements.txt
 ```
 
 ### 4. Rodar o servidor
 
-```powershell
+```bash
 uvicorn main:app --reload
 ```
 
@@ -53,8 +69,8 @@ As tabelas são criadas automaticamente na primeira execução.
 
 | Método | Rota | Descrição |
 |--------|------|-----------|
-| POST | `/estudantes/` | Cadastrar estudante |
-| GET | `/estudantes/` | Listar estudantes |
+| POST | `/estudantes/` | Cadastrar estudante (perfil opcional) |
+| GET | `/estudantes/` | Listar estudantes com perfil |
 | POST | `/matriculas/` | Cadastrar matrícula |
 | GET | `/matriculas/` | Listar matrículas |
 

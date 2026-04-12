@@ -26,14 +26,12 @@ def read_root():
 # ====================================================================
 @router.post("/estudantes/", response_model=schemas.Estudante)
 def criar_estudante(estudante: schemas.EstudanteCreate, db: Session = Depends(get_db)):
-    db_estudante = (
-        models.Estudante(
-            nome=estudante.nome,
-            perfil=(
-                models.Perfil(**estudante.perfil.model_dump())
-                if estudante.perfil
-                else None
-            ),
+    db_estudante = models.Estudante(
+        nome=estudante.nome,
+        perfil=(
+            models.Perfil(**estudante.perfil.model_dump())
+            if estudante.perfil
+            else None
         ),
     )
     db.add(db_estudante)
