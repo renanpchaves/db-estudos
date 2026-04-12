@@ -55,5 +55,7 @@ As tabelas são criadas automaticamente na primeira execução.
 |--------|------|-----------|
 | POST | `/estudantes/` | Cadastrar estudante |
 | GET | `/estudantes/` | Listar estudantes |
+| POST | `/matriculas/` | Cadastrar matrícula |
+| GET | `/matriculas/` | Listar matrículas |
 
 A documentação interativa fica disponível em `http://localhost:8000/docs`.
