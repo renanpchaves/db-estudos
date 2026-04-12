@@ -69,13 +69,4 @@ As tabelas são criadas automaticamente na primeira execução.
 
 ## Endpoints
 
-| Método | Rota | Descrição |
-|--------|------|-----------|
-| POST | `/estudantes/` | Cadastrar estudante (perfil opcional) |
-| GET | `/estudantes/` | Listar estudantes com perfil |
-| POST | `/matriculas/` | Cadastrar matrícula |
-| GET | `/matriculas/` | Listar matrículas |
-| POST | `/disciplinas/` | Cadastrar disciplina |
-| POST | `/professores/` | Cadastrar professor |
-
 A documentação interativa fica disponível em `http://localhost:8000/docs`.
