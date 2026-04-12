@@ -47,17 +47,53 @@ class EstudanteCreate(BaseModel):
 # ============================================================
 
 
-class MatriculaBase(BaseModel):
-    estudante_id: int
-    nome_disciplina: str
-
-
-class MatriculaCreate(MatriculaBase):
-    pass
-
-
-class MatriculaResponse(MatriculaBase):
+class Matricula(BaseModel):
     id: int
+    estudante_id: int
+    disciplina_id: int
 
     class Config:
         from_attributes = True
+
+
+class MatriculaCreate(BaseModel):
+    estudante_id: int
+    disciplina_id: int
+
+
+# ============================================================
+# Disciplinas
+# ============================================================
+
+
+class Disciplina(BaseModel):
+    id: int
+    nome: str
+    professor_id: int
+
+    class Config:
+        from_attributes = True
+
+
+class DisciplinaCreate(BaseModel):
+    nome: str
+    professor_id: int
+
+
+# ============================================================
+# Professores
+# ============================================================
+
+
+class Professor(BaseModel):
+    id: int
+    nome: str
+    email: str
+
+    class Config:
+        from_attributes = True
+
+
+class ProfessorCreate(BaseModel):
+    nome: str
+    email: int

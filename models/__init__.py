@@ -1,1 +1,1 @@
-from .models import Base, Estudante, Perfil, Matricula
+from .models import Base, Estudante, Perfil, Matricula, Disciplina, Professor

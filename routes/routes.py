@@ -28,10 +28,9 @@ def read_root():
 def criar_estudante(estudante: schemas.EstudanteCreate, db: Session = Depends(get_db)):
     db_estudante = models.Estudante(
         nome=estudante.nome,
+        email=estudante.email,
         perfil=(
-            models.Perfil(**estudante.perfil.model_dump())
-            if estudante.perfil
-            else None
+            models.Perfil(**estudante.perfil.model_dump()) if estudante.perfil else None
         ),
     )
     db.add(db_estudante)
@@ -51,7 +50,7 @@ def listar_estudantes(db: Session = Depends(get_db)):
 # ====================================================================
 # Matriculas
 # ====================================================================
-@router.post("/matriculas/", response_model=schemas.MatriculaResponse)
+@router.post("/matriculas/", response_model=schemas.Matricula)
 def criar_matricula(matricula: schemas.MatriculaCreate, db: Session = Depends(get_db)):
     estudante = (
         db.query(models.Estudante)
@@ -67,7 +66,37 @@ def criar_matricula(matricula: schemas.MatriculaCreate, db: Session = Depends(ge
     return db_matricula
 
 
-@router.get("/matriculas/", response_model=List[schemas.MatriculaResponse])
+@router.get("/matriculas/", response_model=List[schemas.Matricula])
 def listar_matriculas(db: Session = Depends(get_db)):
     matriculas = db.query(models.Matricula).all()
     return matriculas
+
+
+# ====================================================================
+# Disciplinas
+# ====================================================================
+
+
+@router.post("/disciplinas/", response_model=schemas.Disciplina)
+def criar_disciplina(
+    disciplina: schemas.DisciplinaCreate, db: Session = Depends(get_db)
+):
+    db_disciplina = models.Disciplina(**disciplina.model_dump())
+    db.add(db_disciplina)
+    db.commit()
+    db.refresh(db_disciplina)
+    return db_disciplina
+
+
+# ====================================================================
+# Professores
+# ====================================================================
+
+
+@router.post("/professores/", response_model=schemas.Professor)
+def criar_professor(professor: schemas.ProfessorCreate, db: Session = Depends(get_db)):
+    db_professor = models.Professor(**professor.model_dump())
+    db.add(db_professor)
+    db.commit()
+    db.refresh(db_professor)
+    return db_professor

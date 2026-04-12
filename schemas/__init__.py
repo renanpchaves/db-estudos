@@ -3,7 +3,10 @@ from .schemas import (
     PerfilCreate,
     Estudante,
     EstudanteCreate,
-    MatriculaBase,
+    Matricula,
     MatriculaCreate,
-    MatriculaResponse,
+    Disciplina,
+    DisciplinaCreate,
+    Professor,
+    ProfessorCreate,
 )
